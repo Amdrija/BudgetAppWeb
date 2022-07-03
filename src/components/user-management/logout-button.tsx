@@ -12,7 +12,7 @@ const LogoutButton = () => {
         })
       }
     >
-      Log Out
+      Одјави се
     </Button>
   );
 };

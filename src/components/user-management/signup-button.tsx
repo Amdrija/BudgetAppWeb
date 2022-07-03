@@ -12,7 +12,7 @@ const SignupButton = () => {
         })
       }
     >
-      Sign Up
+      Региструј се
     </Button>
   );
 };

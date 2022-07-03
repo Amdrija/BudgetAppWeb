@@ -4,13 +4,7 @@ import { Button } from '@chakra-ui/react';
 
 const LoginButton = () => {
   const { loginWithRedirect } = useAuth0();
-  return (
-    <Button
-      onClick={() => loginWithRedirect()}
-    >
-      Log In
-    </Button>
-  );
+  return <Button onClick={() => loginWithRedirect()}>Пријави се</Button>;
 };
 
 export default LoginButton;
