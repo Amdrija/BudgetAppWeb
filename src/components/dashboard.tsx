@@ -1,68 +1,65 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import {
+  AspectRatio,
   Box,
+  Center,
   Container,
   Flex,
+  Spacer,
   Stat,
   StatHelpText,
   StatLabel,
   StatNumber,
+  Text,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { TotalAmount } from '../models/GetTotalAmount';
 import { getCurrentMonthSerbian } from '../months';
 import { GetTotalAmount } from '../repositories/ExpenseRepository';
 import theme from '../theme';
+import DoughnutChart from './statistics/DoughnutChart';
 
-function Dashboard() {
-  const [total, setTotal] = useState(0);
+type DashboardProps = {
+  monthlyStats: TotalAmount;
+  dailyStats: TotalAmount;
+};
 
-  const { getAccessTokenSilently } = useAuth0();
-
-  useEffect(() => {
-    (async () => {
-      const firstOfMonth = new Date();
-      firstOfMonth.setDate(1);
-      const lastOfMonth = new Date();
-      lastOfMonth.setMonth((lastOfMonth.getMonth() + 1) % 12);
-      lastOfMonth.setDate(0);
-
-      try {
-        const token = await getAccessTokenSilently();
-
-        setTotal(
-          await (
-            await GetTotalAmount(token, firstOfMonth, lastOfMonth)
-          ).totalAmount
-        );
-      } catch (e) {
-        console.log(e);
-      }
-    })();
-  });
+function Dashboard({ monthlyStats, dailyStats }: DashboardProps) {
+  const today = new Date();
 
   return (
     <Flex wrap="wrap" gap={6}>
-      <Box
-        bg={theme.secondary}
+      <Flex
         boxShadow="base"
-        flex={1}
-        flexBasis="300px"
         p={6}
+        justify="center"
+        w={{ base: '100%', md: '400px' }}
+        wrap="wrap"
       >
-        <Stat bg={theme.secondary}>
-          <StatLabel>Укупни трошкови</StatLabel>
-          <StatNumber>{total}</StatNumber>
+        <Center w="100%" mb={2}>
+          <Text>Месечна потрошња</Text>
+        </Center>
+        <AspectRatio w="300px" ratio={1}>
+          <DoughnutChart byCategory={monthlyStats.byCategory}></DoughnutChart>
+        </AspectRatio>
+      </Flex>
+      <Flex
+        bg={theme.secondary}
+        wrap="wrap"
+        w={{ base: '100%', md: '150px' }}
+        gap={6}
+      >
+        <Stat bg={theme.secondary} boxShadow="base" p={6}>
+          <StatLabel>Месечни трошкови</StatLabel>
+          <StatNumber>{monthlyStats.totalAmount}</StatNumber>
           <StatHelpText>{getCurrentMonthSerbian()}</StatHelpText>
         </Stat>
-      </Box>
-      <Box
-        boxShadow="base"
-        bg={theme.primary}
-        flex={1}
-        flexBasis="300px"
-        h="150px"
-      ></Box>
+        <Stat bg={theme.secondary} boxShadow="base" p={6}>
+          <StatLabel>Дневни трошкови</StatLabel>
+          <StatNumber>{dailyStats.totalAmount}</StatNumber>
+          <StatHelpText>{today.toLocaleDateString('sr')}</StatHelpText>
+        </Stat>
+      </Flex>
     </Flex>
   );
 }
