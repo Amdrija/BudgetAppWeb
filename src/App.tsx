@@ -17,7 +17,7 @@ import Loading from './components/layout/Loading';
 
 function App() {
   return (
-    <Container maxW="100vw" h="100vh">
+    <Container maxW="100vw">
       <Header />
       <Container maxW="1200px">
         <Heading mt={6} mb={6}>

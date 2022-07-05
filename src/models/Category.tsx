@@ -4,7 +4,7 @@ export class Category {
     return this._id;
   }
 
-  private _name: string = '';
+  private _name: string = 'Default name';
   public get name(): string {
     return this._name;
   }
