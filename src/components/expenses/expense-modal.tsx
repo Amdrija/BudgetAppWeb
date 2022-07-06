@@ -37,6 +37,7 @@ type ExpenseModalProps = {
   title: string;
   expense: Expense;
   handleSubmit: (newExpense: Expense) => Promise<void>;
+  onDeleteExpense: (expense: Expense) => Promise<void> | null;
 };
 
 function ExpenseModal({
@@ -45,6 +46,7 @@ function ExpenseModal({
   title,
   expense,
   handleSubmit,
+  onDeleteExpense,
 }: ExpenseModalProps) {
   const [isIncome, setIsIncome] = useState(expense.amount > 0 || false);
   const [newExpense, setNewExpense] = useState({
@@ -94,6 +96,12 @@ function ExpenseModal({
     if (expense.id === defaultExpense.id) {
       setNewExpense(defaultExpense);
     }
+
+    onClose();
+  };
+
+  const deleteModal = async (event: Event) => {
+    await onDeleteExpense(expense);
 
     onClose();
   };
@@ -167,17 +175,26 @@ function ExpenseModal({
             </form>
           </ModalBody>
 
-          <ModalFooter>
-            <Button
-              colorScheme={theme.buttonPrimary}
-              mr={3}
-              onClick={submitModal}
-            >
-              Сачувај
-            </Button>
-            <Button variant="ghost" onClick={onClose}>
-              Одустани
-            </Button>
+          <ModalFooter display="flex" justifyContent="space-between">
+            <Box>
+              {onDeleteExpense != null && (
+                <Button colorScheme="red" onClick={deleteModal}>
+                  Избриши
+                </Button>
+              )}
+            </Box>
+            <Box>
+              <Button
+                colorScheme={theme.buttonPrimary}
+                mr={3}
+                onClick={submitModal}
+              >
+                Сачувај
+              </Button>
+              <Button variant="ghost" onClick={onClose}>
+                Одустани
+              </Button>
+            </Box>
           </ModalFooter>
         </ModalContent>
       </Modal>

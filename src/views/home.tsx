@@ -14,6 +14,7 @@ import Dashboard from '../components/dashboard';
 import { useAuth0 } from '@auth0/auth0-react';
 import {
   addExpense,
+  deleteExpense,
   editExpense,
   GetExpenses,
   GetTotalAmount,
@@ -116,12 +117,23 @@ function Home() {
 
   const editExpenseModal = async (newExpense: Expense) => {
     try {
-      console.log(1);
       const token = await getAccessTokenSilently();
       const expense = await editExpense(token, newExpense);
       expense.category = newExpense.category;
 
       setExpenses(expenses.map((e) => (e.id != expense.id ? e : expense)));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const deleteExpenseModal = async (newExpense: Expense) => {
+    try {
+      console.log(newExpense);
+      const token = await getAccessTokenSilently();
+      await deleteExpense(token, newExpense);
+
+      setExpenses(expenses.filter((e) => e.id != newExpense.id));
     } catch (e) {
       console.log(e);
     }
@@ -135,11 +147,15 @@ function Home() {
       ></Dashboard>
       <Box mt={6}>
         <Heading mb={6}>Листа трошкова за {getCurrentMonthSerbian()}</Heading>
+
+        <Box mb={6}>
+          <AddExpenseModal handleSubmit={addExpenseModal}></AddExpenseModal>
+        </Box>
         <ExpenseTable
           expenses={expenses}
           onEditExpense={editExpenseModal}
+          onDeleteExpense={deleteExpenseModal}
         ></ExpenseTable>
-        <AddExpenseModal handleSubmit={addExpenseModal}></AddExpenseModal>
       </Box>
     </div>
   );

@@ -3,7 +3,7 @@ import React from 'react';
 import { defaultExpense } from '../../models/Expense';
 import ExpenseModal from './expense-modal';
 
-function ExpenseTableRow({ expense, onEditExpense }) {
+function ExpenseTableRow({ expense, onEditExpense, onDeleteExpense }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -22,6 +22,7 @@ function ExpenseTableRow({ expense, onEditExpense }) {
           title="Измени трошак"
           expense={expense}
           handleSubmit={onEditExpense}
+          onDeleteExpense={onDeleteExpense}
         ></ExpenseModal>
       </Td>
       <Td pl={0}>{expense.name}</Td>

@@ -24,9 +24,14 @@ import ExpenseTableRow from './expense-table-row';
 type ExpenseTableProps = {
   expenses: Expense[];
   onEditExpense: (expense: Expense) => Promise<void>;
+  onDeleteExpense: (expense: Expense) => Promise<void>;
 };
 
-function ExpenseTable({ expenses, onEditExpense }: ExpenseTableProps) {
+function ExpenseTable({
+  expenses,
+  onEditExpense,
+  onDeleteExpense,
+}: ExpenseTableProps) {
   return (
     <div>
       <TableContainer>
@@ -47,6 +52,7 @@ function ExpenseTable({ expenses, onEditExpense }: ExpenseTableProps) {
                 key={e.id}
                 expense={e}
                 onEditExpense={onEditExpense}
+                onDeleteExpense={onDeleteExpense}
               />
             ))}
           </Tbody>

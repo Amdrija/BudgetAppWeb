@@ -112,3 +112,18 @@ export async function editExpense(
 
   return responseData;
 }
+
+export async function deleteExpense(
+  token: string,
+  expense: Expense
+): Promise<void> {
+  const serverUrl = import.meta.env.VITE_SERVER_URL;
+
+  const response = await fetch(`${serverUrl}/Expense/${expense.id}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json;charset=UTF-8',
+    },
+  });
+}
