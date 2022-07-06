@@ -91,3 +91,24 @@ export async function addExpense(
 
   return expenseResponse;
 }
+
+export async function editExpense(
+  token: string,
+  expense: Expense
+): Promise<Expense> {
+  const serverUrl = import.meta.env.VITE_SERVER_URL;
+
+  const response = await fetch(`${serverUrl}/Expense/${expense.id}`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json;charset=UTF-8',
+    },
+    body: JSON.stringify(expense),
+  });
+
+  const responseData: Expense = await response.json();
+  responseData.date = new Date(responseData.date);
+
+  return responseData;
+}

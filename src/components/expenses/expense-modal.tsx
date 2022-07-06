@@ -35,7 +35,7 @@ type ExpenseModalProps = {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  expense: Expense | null;
+  expense: Expense;
   handleSubmit: (newExpense: Expense) => Promise<void>;
 };
 
@@ -46,8 +46,11 @@ function ExpenseModal({
   expense,
   handleSubmit,
 }: ExpenseModalProps) {
-  const [newExpense, setNewExpense] = useState(expense || defaultExpense);
-  const [isIncome, setIsIncome] = useState(false);
+  const [isIncome, setIsIncome] = useState(expense.amount > 0 || false);
+  const [newExpense, setNewExpense] = useState({
+    ...expense,
+    amount: expense.amount < 0 ? -expense.amount : expense.amount,
+  } as Expense);
 
   const handleChange = (event: ChangeEvent) => {
     const target = event.target;
@@ -86,8 +89,12 @@ function ExpenseModal({
   const submitModal = async (event: Event) => {
     event.preventDefault();
     newExpense.amount = isIncome ? newExpense.amount : -newExpense.amount;
-    console.log(newExpense);
+
     await handleSubmit(newExpense);
+    if (expense.id === defaultExpense.id) {
+      setNewExpense(defaultExpense);
+    }
+
     onClose();
   };
 
@@ -99,14 +106,14 @@ function ExpenseModal({
           <ModalHeader>{title}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <form onSubmit={submitModal}>
+            <form>
               <Flex align="center">
                 <FormLabel htmlFor="еxpense-income-swich" mb={1}>
                   Трошак
                 </FormLabel>
                 <Switch
                   id="income-swich"
-                  checked={newExpense.amount >= 0}
+                  isChecked={isIncome}
                   colorScheme={theme.buttonPrimary}
                   onChange={changeAmountSign}
                 />
@@ -117,15 +124,20 @@ function ExpenseModal({
               <Text mt={3}>Име:</Text>
               <Input
                 placeholder="Име"
-                value={newExpense?.name}
+                value={newExpense.name}
                 onChange={handleChange}
                 name="name"
               ></Input>
               <Text mt={3}>Вредност:</Text>
-              <NumberInput precision={2} step={0.01} min={0}>
+              <NumberInput
+                precision={2}
+                step={0.01}
+                min={0}
+                defaultValue={newExpense.amount}
+              >
                 <NumberInputField
                   value={newExpense.amount}
-                  onChange={handleChange}
+                  onChange={changeAmount}
                   name="amount"
                   required
                 />
@@ -135,7 +147,10 @@ function ExpenseModal({
                 </NumberInputStepper>
               </NumberInput>
               <Text mt={3}>Категорија:</Text>
-              <CategorySelect changeCategory={changeCategory} />
+              <CategorySelect
+                changeCategory={changeCategory}
+                defaultValue={newExpense.category}
+              />
               <Text mt={3}>Датум:</Text>
               <DatePicker
                 onChange={changeDate}
@@ -145,7 +160,7 @@ function ExpenseModal({
               <Text mt={3}>Опис:</Text>
               <Textarea
                 placeholder="Опис"
-                value={newExpense?.description || ''}
+                value={newExpense.description ?? ''}
                 onChange={handleChange}
                 name="description"
               ></Textarea>

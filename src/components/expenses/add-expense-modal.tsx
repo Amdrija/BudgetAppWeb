@@ -1,6 +1,6 @@
 import { Button, Center, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
-import { Expense } from '../../models/Expense';
+import { defaultExpense, Expense } from '../../models/Expense';
 import theme from '../../theme';
 import ExpenseModal from './expense-modal';
 
@@ -35,7 +35,7 @@ function AddExpenseModal({ handleSubmit }: AddExpenseModalProps) {
         isOpen={isOpen}
         onClose={onClose}
         title="Додај нови трошак"
-        expense={null}
+        expense={defaultExpense}
         handleSubmit={handleSubmit}
       ></ExpenseModal>
     </>

@@ -12,16 +12,21 @@ import {
   Box,
   Center,
   Button,
+  useDisclosure,
 } from '@chakra-ui/react';
-import React from 'react';
-import { Expense } from '../../models/Expense';
+import exp from 'constants';
+import React, { useState } from 'react';
+import { defaultExpense, Expense } from '../../models/Expense';
 import theme from '../../theme';
+import ExpenseModal from './expense-modal';
+import ExpenseTableRow from './expense-table-row';
 
 type ExpenseTableProps = {
   expenses: Expense[];
+  onEditExpense: (expense: Expense) => Promise<void>;
 };
 
-function ExpenseTable({ expenses }: ExpenseTableProps) {
+function ExpenseTable({ expenses, onEditExpense }: ExpenseTableProps) {
   return (
     <div>
       <TableContainer>
@@ -38,20 +43,11 @@ function ExpenseTable({ expenses }: ExpenseTableProps) {
           </Thead>
           <Tbody>
             {expenses.map((e) => (
-              <Tr key={e.id}>
-                <Td p={3}>
-                  <Box
-                    display="inline-block"
-                    bg={e.category.color}
-                    h="1rem"
-                    w="1rem"
-                    borderRadius="1rem"
-                  ></Box>
-                </Td>
-                <Td pl={0}>{e.name}</Td>
-                <Td>{e.date.toLocaleDateString('sr')}</Td>
-                <Td isNumeric>{e.amount}</Td>
-              </Tr>
+              <ExpenseTableRow
+                key={e.id}
+                expense={e}
+                onEditExpense={onEditExpense}
+              />
             ))}
           </Tbody>
         </Table>

@@ -14,6 +14,7 @@ import Dashboard from '../components/dashboard';
 import { useAuth0 } from '@auth0/auth0-react';
 import {
   addExpense,
+  editExpense,
   GetExpenses,
   GetTotalAmount,
 } from '../repositories/ExpenseRepository';
@@ -59,7 +60,7 @@ function Home() {
         //console.log(e);
       }
     })();
-  }, []);
+  }, [expenses]);
 
   useEffect(() => {
     (async () => {
@@ -109,9 +110,21 @@ function Home() {
       const expense = await addExpense(token, newExpense);
       expense.category = newExpense.category;
 
-      console.log(expense);
       setExpenses([...expenses, expense]);
     } catch (e) {}
+  };
+
+  const editExpenseModal = async (newExpense: Expense) => {
+    try {
+      console.log(1);
+      const token = await getAccessTokenSilently();
+      const expense = await editExpense(token, newExpense);
+      expense.category = newExpense.category;
+
+      setExpenses(expenses.map((e) => (e.id != expense.id ? e : expense)));
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -122,7 +135,10 @@ function Home() {
       ></Dashboard>
       <Box mt={6}>
         <Heading mb={6}>Листа трошкова за {getCurrentMonthSerbian()}</Heading>
-        <ExpenseTable expenses={expenses}></ExpenseTable>
+        <ExpenseTable
+          expenses={expenses}
+          onEditExpense={editExpenseModal}
+        ></ExpenseTable>
         <AddExpenseModal handleSubmit={addExpenseModal}></AddExpenseModal>
       </Box>
     </div>

@@ -6,12 +6,15 @@ import { getCategories } from '../../repositories/CategoryRepository';
 
 type CategorySelectProps = {
   changeCategory: (category: Category) => void;
+  defaultValue: Category | null;
 };
 
-function CategorySelect({ changeCategory }) {
+function CategorySelect({ changeCategory, defaultValue }: CategorySelectProps) {
   const { getAccessTokenSilently } = useAuth0();
   const [categories, setCategories] = useState(new Array<Category>());
-  const [selectedCategoryId, setSelectedCategoryId] = useState('');
+  const [selectedCategoryId, setSelectedCategoryId] = useState(
+    defaultValue?.id || ''
+  );
 
   useEffect(() => {
     (async () => {
