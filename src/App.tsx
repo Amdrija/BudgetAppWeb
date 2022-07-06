@@ -14,6 +14,7 @@ import LoginButton from './components/user-management/login-button';
 import { Route, Routes } from 'react-router-dom';
 import Header from './components/layout/header';
 import Loading from './components/layout/Loading';
+import Footer from './components/layout/footer';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/" element={<Home />} />
         </Routes>
       </Container>
+      <Footer />
     </Container>
   );
 }

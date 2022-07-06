@@ -35,6 +35,7 @@ function Dashboard({ monthlyStats, dailyStats }: DashboardProps) {
         justify="center"
         w={{ base: '100%', md: '400px' }}
         wrap="wrap"
+        borderRadius={theme.borderRadius}
       >
         <Center w="100%" mb={2}>
           <Text>Месечна потрошња</Text>
@@ -49,12 +50,22 @@ function Dashboard({ monthlyStats, dailyStats }: DashboardProps) {
         w={{ base: '100%', md: '150px' }}
         gap={6}
       >
-        <Stat bg={theme.secondary} boxShadow="base" p={6}>
+        <Stat
+          bg={theme.secondary}
+          boxShadow="base"
+          p={6}
+          borderRadius={theme.borderRadius}
+        >
           <StatLabel>Месечни трошкови</StatLabel>
           <StatNumber>{monthlyStats.totalAmount}</StatNumber>
           <StatHelpText>{getCurrentMonthSerbian()}</StatHelpText>
         </Stat>
-        <Stat bg={theme.secondary} boxShadow="base" p={6}>
+        <Stat
+          bg={theme.secondary}
+          boxShadow="base"
+          p={6}
+          borderRadius={theme.borderRadius}
+        >
           <StatLabel>Дневни трошкови</StatLabel>
           <StatNumber>{dailyStats.totalAmount}</StatNumber>
           <StatHelpText>{today.toLocaleDateString('sr')}</StatHelpText>

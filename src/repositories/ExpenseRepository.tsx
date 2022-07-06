@@ -70,3 +70,24 @@ export async function GetExpenses(
     return e;
   });
 }
+
+export async function addExpense(
+  token: string,
+  expense: Expense
+): Promise<Expense> {
+  const serverUrl = import.meta.env.VITE_SERVER_URL;
+
+  const response = await fetch(`${serverUrl}/Expense`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json;charset=UTF-8',
+    },
+    body: JSON.stringify([expense]),
+  });
+  const responseData: Expense[] = await response.json();
+  const expenseResponse: Expense = responseData[0];
+  expenseResponse.date = new Date(expenseResponse.date);
+
+  return expenseResponse;
+}
