@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { TotalAmount } from '../models/GetTotalAmount';
-import { getCurrentMonthSerbian } from '../months';
+import { getCurrentMonthSerbian, getMonthSerbian } from '../months';
 import { GetTotalAmount } from '../repositories/ExpenseRepository';
 import theme from '../theme';
 import DoughnutChart from './statistics/DoughnutChart';
@@ -22,9 +22,10 @@ import DoughnutChart from './statistics/DoughnutChart';
 type DashboardProps = {
   monthlyStats: TotalAmount;
   dailyStats: TotalAmount;
+  month: Date;
 };
 
-function Dashboard({ monthlyStats, dailyStats }: DashboardProps) {
+function Dashboard({ monthlyStats, dailyStats, month }: DashboardProps) {
   const today = new Date();
 
   return (
@@ -58,7 +59,7 @@ function Dashboard({ monthlyStats, dailyStats }: DashboardProps) {
         >
           <StatLabel>Месечни трошкови</StatLabel>
           <StatNumber>{monthlyStats.totalAmount}</StatNumber>
-          <StatHelpText>{getCurrentMonthSerbian()}</StatHelpText>
+          <StatHelpText>{getMonthSerbian(month)}</StatHelpText>
         </Stat>
         <Stat
           bg={theme.secondary}

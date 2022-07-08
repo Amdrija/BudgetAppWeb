@@ -1,6 +1,8 @@
 import React, { HTMLAttributes } from 'react';
-import ReactDatePicker from 'react-datepicker';
+import ReactDatePicker, { registerLocale } from 'react-datepicker';
 import { useColorMode } from '@chakra-ui/react';
+import sr from 'date-fns/locale/sr';
+registerLocale('sr', sr);
 
 import 'react-datepicker/dist/react-datepicker.css';
 import './datepicker.css';
@@ -30,6 +32,7 @@ const DatePicker = ({
         isClearable={isClearable}
         showPopperArrow={showPopperArrow}
         className="react-datapicker__input-text" //input is white by default and there is no already defined class for it so I created a new one
+        locale="sr"
         {...props}
       />
     </div>

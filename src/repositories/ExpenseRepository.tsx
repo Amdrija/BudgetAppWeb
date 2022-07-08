@@ -14,7 +14,7 @@ export async function GetTotalAmount(
     searchParams.append('StartDate', startDate?.toISOString());
   }
   if (endDate != null) {
-    searchParams.append('StartDate', endDate?.toISOString());
+    searchParams.append('EndDate', endDate?.toISOString());
   }
 
   const response = await fetch(`${serverUrl}/Expense/graph?${searchParams}`, {
@@ -42,7 +42,7 @@ export async function GetExpenses(
     searchParams.append('StartDate', startDate?.toISOString());
   }
   if (endDate != null) {
-    searchParams.append('StartDate', endDate?.toISOString());
+    searchParams.append('EndDate', endDate?.toISOString());
   }
   if (categoryIds != null) {
     searchParams.append('CategoryIds[]', categoryIds.join(','));

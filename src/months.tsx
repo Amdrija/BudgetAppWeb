@@ -1,4 +1,4 @@
-export const months = [
+const months = [
   'Јануар',
   'Фебруар',
   'Март',
@@ -14,7 +14,9 @@ export const months = [
 ];
 
 export function getCurrentMonthSerbian(): string {
-  let date = new Date();
+  return getMonthSerbian(new Date());
+}
 
+export function getMonthSerbian(date: Date): string {
   return months[date.getMonth()];
 }

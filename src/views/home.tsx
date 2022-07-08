@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
   Box,
   Button,
   Center,
+  Flex,
   Heading,
+  resolveStyleConfig,
   Stat,
   StatHelpText,
   StatLabel,
@@ -26,6 +28,7 @@ import { Expense } from '../models/Expense';
 import theme from '../theme';
 import ExpenseModal from '../components/expenses/expense-modal';
 import AddExpenseModal from '../components/expenses/add-expense-modal';
+import MonthPicker from '../components/datepicker/monthpicker';
 
 function Home() {
   const [monthlyStats, setMonthlyStats] = useState({
@@ -37,14 +40,22 @@ function Home() {
     byCategory: [],
   } as TotalAmount);
   const [expenses, setExpenses] = useState([] as Expense[]);
+  const [currentMonth, setCurrentMonth] = useState(new Date());
 
   const { getAccessTokenSilently } = useAuth0();
 
-  const firstOfMonth = new Date();
-  firstOfMonth.setDate(1);
-  const lastOfMonth = new Date();
-  lastOfMonth.setMonth((lastOfMonth.getMonth() + 1) % 12);
-  lastOfMonth.setDate(0);
+  const firstOfMonth = useMemo(() => {
+    const firstOfMonth = new Date(currentMonth);
+    firstOfMonth.setDate(1);
+    return firstOfMonth;
+  }, [currentMonth]);
+
+  const lastOfMonth = useMemo(() => {
+    const lastOfMonth = new Date(currentMonth);
+    lastOfMonth.setMonth((lastOfMonth.getMonth() + 1) % 12);
+    lastOfMonth.setDate(0);
+    return lastOfMonth;
+  }, [currentMonth]);
 
   useEffect(() => {
     (async () => {
@@ -61,7 +72,7 @@ function Home() {
         //console.log(e);
       }
     })();
-  }, [expenses]);
+  }, [expenses, currentMonth]);
 
   useEffect(() => {
     (async () => {
@@ -103,7 +114,7 @@ function Home() {
         console.log(e);
       }
     })();
-  }, []);
+  }, [currentMonth]);
 
   const addExpenseModal = async (newExpense: Expense) => {
     try {
@@ -111,7 +122,13 @@ function Home() {
       const expense = await addExpense(token, newExpense);
       expense.category = newExpense.category;
 
-      setExpenses([...expenses, expense]);
+      if (expense.date.getMonth() == currentMonth.getMonth()) {
+        setExpenses(
+          [...expenses, expense].sort(
+            (a, b) => b.date.getTime() - a.date.getTime()
+          )
+        );
+      }
     } catch (e) {}
   };
 
@@ -121,7 +138,13 @@ function Home() {
       const expense = await editExpense(token, newExpense);
       expense.category = newExpense.category;
 
-      setExpenses(expenses.map((e) => (e.id != expense.id ? e : expense)));
+      if (expense.date.getMonth() == currentMonth.getMonth()) {
+        setExpenses(
+          expenses
+            .map((e) => (e.id != expense.id ? e : expense))
+            .sort((a, b) => b.date.getTime() - a.date.getTime())
+        );
+      }
     } catch (e) {
       console.log(e);
     }
@@ -144,10 +167,21 @@ function Home() {
       <Dashboard
         monthlyStats={monthlyStats}
         dailyStats={dailyStats}
+        month={currentMonth}
       ></Dashboard>
       <Box mt={6}>
-        <Heading mb={6}>Листа трошкова за {getCurrentMonthSerbian()}</Heading>
-
+        <Flex align="baseline" wrap="wrap" mb={6}>
+          <Heading mr={3} flex-grow={0}>
+            Листа трошкова за{' '}
+          </Heading>
+          <Box display="inline-block" w="165px" flex-grow={0} mt={3}>
+            <MonthPicker
+              onChange={(date: Date) => setCurrentMonth(date)}
+              selectedDate={currentMonth}
+              name="date"
+            ></MonthPicker>
+          </Box>
+        </Flex>
         <Box mb={6}>
           <AddExpenseModal handleSubmit={addExpenseModal}></AddExpenseModal>
         </Box>
