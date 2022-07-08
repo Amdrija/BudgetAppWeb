@@ -1,17 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Heading,
-  resolveStyleConfig,
-  Stat,
-  StatHelpText,
-  StatLabel,
-  StatNumber,
-  useDisclosure,
-} from '@chakra-ui/react';
+import { Box, Flex, Heading, useToast } from '@chakra-ui/react';
 import Dashboard from '../components/dashboard';
 import { useAuth0 } from '@auth0/auth0-react';
 import {
@@ -21,12 +9,9 @@ import {
   GetExpenses,
   GetTotalAmount,
 } from '../repositories/ExpenseRepository';
-import { AmountByCategory, TotalAmount } from '../models/GetTotalAmount';
+import { TotalAmount } from '../models/GetTotalAmount';
 import ExpenseTable from '../components/expenses/expense-table';
-import { getCurrentMonthSerbian } from '../months';
 import { Expense } from '../models/Expense';
-import theme from '../theme';
-import ExpenseModal from '../components/expenses/expense-modal';
 import AddExpenseModal from '../components/expenses/add-expense-modal';
 import MonthPicker from '../components/datepicker/monthpicker';
 
@@ -41,6 +26,7 @@ function Home() {
   } as TotalAmount);
   const [expenses, setExpenses] = useState([] as Expense[]);
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const toast = useToast();
 
   const { getAccessTokenSilently } = useAuth0();
 
@@ -69,7 +55,13 @@ function Home() {
 
         setMonthlyStats(totalAmountResponse);
       } catch (e) {
-        //console.log(e);
+        toast({
+          title: 'Грешка',
+          description: 'Дошло је до грешке при учитавању података.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
       }
     })();
   }, [expenses, currentMonth]);
@@ -91,7 +83,13 @@ function Home() {
 
         setDailyStats(totalAmountResponse);
       } catch (e) {
-        //console.log(e);
+        toast({
+          title: 'Грешка',
+          description: 'Дошло је до грешке при учитавању података.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
       }
     })();
   }, [expenses]);
@@ -111,7 +109,13 @@ function Home() {
 
         setExpenses(expenses);
       } catch (e) {
-        console.log(e);
+        toast({
+          title: 'Грешка',
+          description: 'Дошло је до грешке при учитавању података.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
       }
     })();
   }, [currentMonth]);
@@ -129,7 +133,15 @@ function Home() {
           )
         );
       }
-    } catch (e) {}
+    } catch (e) {
+      toast({
+        title: 'Грешка',
+        description: 'Дошло је до грешке при додавању трошка.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
 
   const editExpenseModal = async (newExpense: Expense) => {
@@ -146,7 +158,13 @@ function Home() {
         );
       }
     } catch (e) {
-      console.log(e);
+      toast({
+        title: 'Грешка',
+        description: 'Дошло је до грешке при промени трошка.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
@@ -158,12 +176,21 @@ function Home() {
 
       setExpenses(expenses.filter((e) => e.id != newExpense.id));
     } catch (e) {
-      console.log(e);
+      toast({
+        title: 'Грешка',
+        description: 'Дошло је до грешке при брисању трошка.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
   return (
     <div>
+      <Heading mt={6} mb={6}>
+        Трошкови
+      </Heading>
       <Dashboard
         monthlyStats={monthlyStats}
         dailyStats={dailyStats}

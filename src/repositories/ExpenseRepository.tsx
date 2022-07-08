@@ -22,6 +22,11 @@ export async function GetTotalAmount(
       Authorization: `Bearer ${token}`,
     },
   });
+
+  if (!response.ok) {
+    throw new Error(`HTTP Error Status: ${response.status}`);
+  }
+
   const responseData: TotalAmount = await response.json();
 
   return responseData;
@@ -63,6 +68,10 @@ export async function GetExpenses(
     }
   );
 
+  if (!response.ok) {
+    throw new Error(`HTTP Error Status: ${response.status}`);
+  }
+
   const responseData: Expense[] = await response.json();
 
   return responseData.map((e) => {
@@ -85,6 +94,11 @@ export async function addExpense(
     },
     body: JSON.stringify([expense]),
   });
+
+  if (!response.ok) {
+    throw new Error(`HTTP Error Status: ${response.status}`);
+  }
+
   const responseData: Expense[] = await response.json();
   const expenseResponse: Expense = responseData[0];
   expenseResponse.date = new Date(expenseResponse.date);
@@ -107,6 +121,10 @@ export async function editExpense(
     body: JSON.stringify(expense),
   });
 
+  if (!response.ok) {
+    throw new Error(`HTTP Error Status: ${response.status}`);
+  }
+
   const responseData: Expense = await response.json();
   responseData.date = new Date(responseData.date);
 
@@ -126,4 +144,8 @@ export async function deleteExpense(
       'Content-Type': 'application/json;charset=UTF-8',
     },
   });
+
+  if (!response.ok) {
+    throw new Error(`HTTP Error Status: ${response.status}`);
+  }
 }

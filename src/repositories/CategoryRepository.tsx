@@ -8,6 +8,11 @@ export async function getCategories(token: string): Promise<Category[]> {
       Authorization: `Bearer ${token}`,
     },
   });
+
+  if (!response.ok) {
+    throw new Error(`HTTP Error Status: ${response.status}`);
+  }
+
   const responseData: Category[] = await response.json();
 
   return responseData;

@@ -21,9 +21,6 @@ function App() {
     <Container maxW="100vw">
       <Header />
       <Container maxW="1200px">
-        <Heading mt={6} mb={6}>
-          Трошкови
-        </Heading>
         <Routes>
           <Route path="/" element={<Home />} />
         </Routes>
