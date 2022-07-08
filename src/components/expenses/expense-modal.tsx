@@ -23,7 +23,7 @@ import {
   Textarea,
   FormControl,
 } from '@chakra-ui/react';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, MouseEventHandler, useState } from 'react';
 import { Category } from '../../models/Category';
 import { defaultExpense, Expense } from '../../models/Expense';
 import { addExpense } from '../../repositories/ExpenseRepository';
@@ -54,7 +54,9 @@ function ExpenseModal({
     amount: expense.amount < 0 ? -expense.amount : expense.amount,
   } as Expense);
 
-  const handleChange = (event: ChangeEvent) => {
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>
+  ) => {
     const target = event.target;
     const name = target.name;
     const value = target.value;
@@ -69,7 +71,7 @@ function ExpenseModal({
     setNewExpense({ ...newExpense, date: date });
   };
 
-  const changeAmount = (event: ChangeEvent) => {
+  const changeAmount = (event: ChangeEvent<HTMLInputElement>) => {
     setNewExpense({
       ...newExpense,
       amount: +event.target.value,
@@ -88,8 +90,7 @@ function ExpenseModal({
     setIsIncome(!isIncome);
   };
 
-  const submitModal = async (event: Event) => {
-    event.preventDefault();
+  const submitModal = async () => {
     newExpense.amount = isIncome ? newExpense.amount : -newExpense.amount;
 
     await handleSubmit(newExpense);
@@ -100,7 +101,7 @@ function ExpenseModal({
     onClose();
   };
 
-  const deleteModal = async (event: Event) => {
+  const deleteModal = async () => {
     await onDeleteExpense(expense);
 
     onClose();
