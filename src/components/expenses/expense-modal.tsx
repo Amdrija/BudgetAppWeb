@@ -37,7 +37,7 @@ type ExpenseModalProps = {
   title: string;
   expense: Expense;
   handleSubmit: (newExpense: Expense) => Promise<void>;
-  onDeleteExpense: (expense: Expense) => Promise<void> | null;
+  onDeleteExpense: ((expense: Expense) => Promise<void>) | null;
 };
 
 function ExpenseModal({
@@ -102,6 +102,10 @@ function ExpenseModal({
   };
 
   const deleteModal = async () => {
+    if (onDeleteExpense == null) {
+      return;
+    }
+
     await onDeleteExpense(expense);
 
     onClose();

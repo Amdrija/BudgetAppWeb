@@ -15,6 +15,7 @@ import { Route, Routes } from 'react-router-dom';
 import Header from './components/layout/header';
 import Loading from './components/layout/Loading';
 import Footer from './components/layout/footer';
+import Categories from './views/categories';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
       <Container maxW="1200px">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/categories" element={<Categories />} />
         </Routes>
       </Container>
       <Footer />

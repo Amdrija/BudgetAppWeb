@@ -1,4 +1,4 @@
-import { Category } from './Category';
+import { Category, defaultCategory } from './Category';
 
 export type Expense = {
   id: string;
@@ -13,7 +13,7 @@ export type Expense = {
 export const defaultExpense: Expense = {
   id: '00000000-0000-0000-0000-000000000000',
   name: 'Име трошка',
-  category: new Category(),
+  category: defaultCategory,
   categoryId: '00000000-0000-0000-0000-000000000000',
   amount: 0,
   date: new Date(),

@@ -1,14 +1,15 @@
 import { Button, Center, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
+import { Category, defaultCategory } from '../../models/Category';
 import { defaultExpense, Expense } from '../../models/Expense';
 import theme from '../../theme';
-import ExpenseModal from './expense-modal';
+import CategoryModal from './category-modal';
 
-type AddExpenseModalProps = {
-  handleSubmit: (newExpense: Expense) => Promise<void>;
+type AddCategoryModalProps = {
+  handleSubmit: (newCategory: Category) => Promise<void>;
 };
 
-function AddExpenseModal({ handleSubmit }: AddExpenseModalProps) {
+function AddCategoryModal({ handleSubmit }: AddCategoryModalProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -29,18 +30,18 @@ function AddExpenseModal({ handleSubmit }: AddExpenseModalProps) {
           borderColor: theme.primary,
         }}
       >
-        <Center p={3}>+ Додај трошак</Center>
+        <Center p={3}>+ Додај категорију</Center>
       </Button>
-      <ExpenseModal
+      <CategoryModal
         isOpen={isOpen}
         onClose={onClose}
-        title="Додај нови трошак"
-        expense={defaultExpense}
+        title="Додај нови категорију"
+        category={defaultCategory}
         handleSubmit={handleSubmit}
-        onDeleteExpense={null}
-      ></ExpenseModal>
+        onDeleteCategory={null}
+      ></CategoryModal>
     </>
   );
 }
 
-export default AddExpenseModal;
+export default AddCategoryModal;
