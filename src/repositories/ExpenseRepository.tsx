@@ -56,7 +56,7 @@ export async function GetExpenses(
     searchParams.append('MinimumAmount', minimumAmount.toString());
   }
   if (maximumAmount != null) {
-    searchParams.append('MinimumAmount', maximumAmount.toString());
+    searchParams.append('MaximumAmount', maximumAmount.toString());
   }
 
   const response = await fetch(

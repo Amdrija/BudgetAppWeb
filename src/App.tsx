@@ -16,6 +16,7 @@ import Header from './components/layout/header';
 import Loading from './components/layout/Loading';
 import Footer from './components/layout/footer';
 import Categories from './views/categories';
+import Search from './views/search';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/categories" element={<Categories />} />
+          <Route path="/search" element={<Search />} />
         </Routes>
       </Container>
       <Footer />
