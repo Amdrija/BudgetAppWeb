@@ -1,5 +1,5 @@
 import { useAuth0, User } from '@auth0/auth0-react';
-import { Avatar, VStack, Text, HStack, Stack, Flex } from '@chakra-ui/react';
+import { Avatar, Text, HStack, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 function UserInfo() {

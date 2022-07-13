@@ -134,42 +134,61 @@ function ExpenseModal({
                   Зарада
                 </FormLabel>
               </Flex>
-              <Text mt={3}>Име:</Text>
-              <Input
-                placeholder="Име"
-                value={newExpense.name}
-                onChange={handleChange}
-                name="name"
-              ></Input>
-              <Text mt={3}>Вредност:</Text>
-              <NumberInput
-                precision={2}
-                step={0.01}
-                min={0}
-                defaultValue={newExpense.amount}
-              >
-                <NumberInputField
-                  value={newExpense.amount}
-                  onChange={changeAmount}
-                  name="amount"
-                  required
+              <FormControl isRequired>
+                <FormLabel htmlFor="name-input" mt={3}>
+                  Име:
+                </FormLabel>
+                <Input
+                  placeholder="Име"
+                  value={newExpense.name}
+                  onChange={handleChange}
+                  name="name"
+                  id="name-input"
+                ></Input>
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel htmlFor="amount-input" mt={3}>
+                  Вредност:
+                </FormLabel>
+                <NumberInput
+                  precision={2}
+                  step={0.01}
+                  min={0}
+                  defaultValue={newExpense.amount}
+                  id="amount-input"
+                >
+                  <NumberInputField
+                    value={newExpense.amount}
+                    onChange={changeAmount}
+                    name="amount"
+                  />
+                  <NumberInputStepper>
+                    <NumberIncrementStepper />
+                    <NumberDecrementStepper />
+                  </NumberInputStepper>
+                </NumberInput>
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel htmlFor="catregory-select" mt={3}>
+                  Категорија:
+                </FormLabel>
+                <CategorySelect
+                  changeCategory={changeCategory}
+                  defaultValue={newExpense.category}
+                  id="category-select"
                 />
-                <NumberInputStepper>
-                  <NumberIncrementStepper />
-                  <NumberDecrementStepper />
-                </NumberInputStepper>
-              </NumberInput>
-              <Text mt={3}>Категорија:</Text>
-              <CategorySelect
-                changeCategory={changeCategory}
-                defaultValue={newExpense.category}
-              />
-              <Text mt={3}>Датум:</Text>
-              <DatePicker
-                onChange={changeDate}
-                selectedDate={newExpense.date}
-                name="date"
-              ></DatePicker>
+              </FormControl>
+              <FormControl isRequired>
+                <FormLabel htmlFor="date-input" mt={3}>
+                  Датум:
+                </FormLabel>
+                <DatePicker
+                  onChange={changeDate}
+                  selectedDate={newExpense.date}
+                  name="date"
+                  id="date-input"
+                ></DatePicker>
+              </FormControl>
               <Text mt={3}>Опис:</Text>
               <Textarea
                 placeholder="Опис"

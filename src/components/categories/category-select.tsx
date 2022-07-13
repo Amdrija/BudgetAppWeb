@@ -7,9 +7,14 @@ import { getCategories } from '../../repositories/CategoryRepository';
 type CategorySelectProps = {
   changeCategory: (category: Category) => void;
   defaultValue: Category | null;
+  id: string;
 };
 
-function CategorySelect({ changeCategory, defaultValue }: CategorySelectProps) {
+function CategorySelect({
+  changeCategory,
+  defaultValue,
+  id,
+}: CategorySelectProps) {
   const { getAccessTokenSilently } = useAuth0();
   const [categories, setCategories] = useState(new Array<Category>());
   const [selectedCategoryId, setSelectedCategoryId] = useState(
@@ -38,6 +43,7 @@ function CategorySelect({ changeCategory, defaultValue }: CategorySelectProps) {
       placeholder="Select option"
       onChange={handleChange}
       value={selectedCategoryId}
+      id={id}
     >
       {categories.map((c) => (
         <option key={c.id} value={c.id}>

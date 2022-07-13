@@ -50,7 +50,7 @@ export async function GetExpenses(
     searchParams.append('EndDate', endDate?.toISOString());
   }
   if (categoryIds != null) {
-    searchParams.append('CategoryIds[]', categoryIds.join(','));
+    categoryIds.map((c) => searchParams.append('CategoryIds', c));
   }
   if (minimumAmount != null) {
     searchParams.append('MinimumAmount', minimumAmount.toString());
