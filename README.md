@@ -1,6 +1,6 @@
 # BudgetAppWeb
 
-This is the frontend for a simple budget tracker App. You can view it here [https://budget.jelenkovic.xyz](https://budget.jelenkovic.xyz). 
+This is the frontend for a simple budget tracker App. You can view it here [https://budget.andrija.rs](https://budget.andrija.rs). 
 It integrates with Google for authentication to enable multi device connectivity. The backend web application is located here [https://github.com/Amdrija/BudgetApp](https://github.com/Amdrija/BudgetApp).
 
 ## Features
